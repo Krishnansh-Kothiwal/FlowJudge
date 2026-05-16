@@ -1,6 +1,6 @@
 # FlowJudge
 
-**FlowJudge** is a sleek, multi-agent workflow designed to generate high-quality, validated, and critiqued structured JSON outputs. Built with **Streamlit** and **LangGraph**, it demonstrates an agentic approach to data generation where specialized agents collaborate to ensure schema precision and semantic quality.
+**FlowJudge** is a sleek agentic validation workflow designed for startup/product summary JSON generation with validation and critique. Built with **Streamlit** and **LangGraph**, it demonstrates an agentic approach to data generation where specialized nodes collaborate to ensure schema precision and semantic quality.
 
 ![FlowJudge Design](https://img.shields.io/badge/Design-Minimalist%20Dark-0a0a0a?style=for-the-badge)
 ![Built with LangGraph](https://img.shields.io/badge/Orchestration-LangGraph-blue?style=for-the-badge)
@@ -8,22 +8,22 @@
 
 ## ⚡ Agentic Architecture
 
-FlowJudge isn't just a prompt chain—it's a self-correcting autonomous workflow. The system orchestrates five specialized agents:
+FlowJudge isn't just a prompt chain—it's a self-correcting agentic validation workflow. The system orchestrates five specialized nodes:
 
-- **Planner Agent**: Decides the JSON structure and requirements based on the user task.
-- **Generator Agent**: Produces the initial structured JSON draft.
-- **Schema Verifier**: Performs strict Pydantic validation. If the schema is invalid, it triggers the **Repair Agent**.
-- **Quality Critic**: Evaluates the semantic quality (specificity, realism, and tone). If quality is low, it triggers the **Repair Agent**.
-- **Repair Agent**: Uses failure feedback (schema errors or critic notes) to iteratively fix the output.
+- **Planner Node**: Creates a fixed generation plan.
+- **Generator Node**: Produces the initial structured JSON draft.
+- **Schema Verifier**: Performs strict Pydantic validation. If the schema is invalid, it triggers the **Repair Node**.
+- **Quality Critic**: Evaluates the semantic quality (specificity, realism, and tone). If quality is low, it triggers the **Repair Node**.
+- **Repair Node**: Uses failure feedback (schema errors or critic notes) to iteratively fix the output.
 
 ### The Feedback Loop
-The workflow can loop through repair and verification cycles automatically until the output satisfies all constraints or the retry limit is reached.
+The workflow can loop through repair and verification cycles automatically until the output satisfies all constraints. If retries are exhausted, the app surfaces failure state.
 
 ## 🛠️ Features
 
 - **Premium UI**: A minimalist, high-contrast dark theme focused on user experience.
-- **Multi-Model Routing**: Supports NVIDIA NIM (Kimi, Gemma) and Google Gemini with automatic failover logic.
-- **Execution Trace**: View the full multi-agent "thought process," including planner decisions, provider routes, and execution logs.
+- **Multi-Model Routing**: Supports NVIDIA NIM (Kimi, Gemma) and Google Gemini with configurable provider fallback for generation and repair.
+- **Execution Trace**: View the execution trace, including planner decisions, provider routes, and execution logs.
 - **Strict Validation**: Uses Pydantic to enforce rigid data schemas.
 
 ## 🚀 Setup
@@ -65,10 +65,6 @@ The workflow can loop through repair and verification cycles automatically until
 - `nodes.py`: Implementation of individual agent logic (Planner, Generator, etc.).
 - `llm.py`: Multi-provider routing and fallback handling.
 - `schemas.py`: Pydantic models for data validation.
-
-## 📄 Resume Bullet
-
-- Engineered **FlowJudge**, an agentic multi-agent workflow using **LangGraph** and **Streamlit** to automate the generation, validation, and semantic critique of structured JSON datasets, implementing iterative self-repair loops and multi-provider fallback logic (Gemini & NVIDIA NIM).
 
 ---
 *Designed for precision. Built for intelligence.*

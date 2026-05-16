@@ -153,11 +153,11 @@ Return only this JSON shape:
         }
     except (json.JSONDecodeError, ValidationError):
         return {
-            "quality_passed": True,
-            "quality_feedback": "Critic response could not be parsed, so quality was allowed to pass.",
+            "quality_passed": False,
+            "quality_feedback": "Critic response could not be parsed.",
             "provider_used": provider_label,
             "provider_history": history,
-            "logs": _append_log(state, "Critic parsing failed; quality check was allowed to pass."),
+            "logs": _append_log(state, "Critic parsing failed."),
         }
 
 
