@@ -8,7 +8,7 @@
 
 ## ⚡ Agentic Architecture
 
-FlowJudge isn't just a prompt chain—it's a self-correcting agentic validation workflow. The system orchestrates five specialized nodes:
+FlowJudge isn't just a prompt chain—it's a self-correcting agentic validation workflow. The system orchestrates five coordinated workflow nodes:
 
 - **Planner Node**: Creates a fixed generation plan.
 - **Generator Node**: Produces the initial structured JSON draft.
@@ -22,7 +22,7 @@ The workflow can loop through repair and verification cycles automatically until
 ## 🛠️ Features
 
 - **Premium UI**: A minimalist, high-contrast dark theme focused on user experience.
-- **Multi-Model Routing**: Supports NVIDIA NIM (Kimi, Gemma) and Google Gemini with configurable provider fallback for generation and repair.
+- **Configurable provider fallback chain**: Supports NVIDIA NIM (Kimi, Gemma) and Google Gemini for generation and repair.
 - **Execution Trace**: View the execution trace, including planner decisions, provider routes, and execution logs.
 - **Strict Validation**: Uses Pydantic to enforce rigid data schemas.
 
@@ -62,8 +62,8 @@ The workflow can loop through repair and verification cycles automatically until
 
 - `app.py`: Streamlit frontend with premium minimalist styling.
 - `graph.py`: LangGraph workflow orchestration and state management.
-- `nodes.py`: Implementation of individual agent logic (Planner, Generator, etc.).
-- `llm.py`: Multi-provider routing and fallback handling.
+- `nodes.py`: Implementation of individual node logic (Planner, Generator, etc.).
+- `llm.py`: Multi-provider fallback handling.
 - `schemas.py`: Pydantic models for data validation.
 
 ---

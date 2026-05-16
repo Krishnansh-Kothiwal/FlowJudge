@@ -10,7 +10,7 @@ from graph import build_graph
 load_dotenv(override=True)
 
 PHASES = [
-    ("planner", "Planner Agent", "Decides what the JSON should contain."),
+    ("planner", "Planner Node", "Decides what the JSON should contain."),
     ("generator", "Generator Agent", "Creates the first structured JSON draft."),
     ("schema_verifier", "Schema Verifier", "Checks strict Pydantic validity."),
     ("quality_critic", "Quality Critic", "Judges usefulness and specificity."),
@@ -408,7 +408,7 @@ if not st.session_state.has_run:
         "Prompt",
         value=st.session_state.task_input,
         height=140,
-        placeholder="Describe the JSON you want to generate. e.g., 'Create a startup summary for an AI tool...'",
+        placeholder="Describe a startup/product idea to convert into structured JSON.",
         label_visibility="collapsed",
     )
     
@@ -475,8 +475,9 @@ else:
 
         st.subheader("Final Output")
         with st.container(border=True):
-            show_final_output(result.get("final"))
-            show_json_block("Raw Final JSON", result.get("final"))
+            final_out = result.get("final") if (validated and quality_passed) else None
+            show_final_output(final_out)
+            show_json_block("Raw Final JSON", final_out)
 
         trace_col, artifact_col = st.columns([1, 1], gap="large")
 
