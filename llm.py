@@ -12,7 +12,29 @@ NVIDIA_BASE_URL = "https://integrate.api.nvidia.com/v1/chat/completions"
 
 
 def _env(name: str, default: str = "") -> str:
-    return os.getenv(name, default).strip()
+    val = os.getenv(name)
+    if val is not None:
+        return val.strip()
+
+    try:
+        import streamlit as st
+        if name in ("NVIDIA_API_KEY", "GEMINI_API_KEY"):
+            return str(st.secrets["api_keys"][name]).strip()
+        elif name.startswith("GENERATOR_"):
+            return str(st.secrets["generator"][name.replace("GENERATOR_", "")]).strip()
+        elif name.startswith("CRITIC_"):
+            return str(st.secrets["critic"][name.replace("CRITIC_", "")]).strip()
+        elif name.startswith("REPAIR_"):
+            return str(st.secrets["repair"][name.replace("REPAIR_", "")]).strip()
+        elif name in ("MAX_RETRIES", "REQUEST_TIMEOUT"):
+            return str(st.secrets["workflow"][name]).strip()
+            
+        if name in st.secrets:
+            return str(st.secrets[name]).strip()
+    except Exception:
+        pass
+
+    return default.strip()
 
 
 def _request_timeout() -> int:
