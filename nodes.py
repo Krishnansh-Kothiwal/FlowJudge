@@ -3,13 +3,13 @@ import os
 
 from pydantic import ValidationError
 
-from llm import call_role_model
+from llm import call_role_model, get_env
 from schemas import FlowState, QualityReview, StartupSummary
 
 
 def _max_retries() -> int:
     try:
-        return int(os.getenv("MAX_RETRIES", "2"))
+        return int(get_env("MAX_RETRIES", "2"))
     except ValueError:
         return 2
 

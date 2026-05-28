@@ -11,7 +11,7 @@ load_dotenv(override=True)
 NVIDIA_BASE_URL = "https://integrate.api.nvidia.com/v1/chat/completions"
 
 
-def _env(name: str, default: str = "") -> str:
+def get_env(name: str, default: str = "") -> str:
     val = os.getenv(name)
     if val is not None:
         return val.strip()
@@ -39,7 +39,7 @@ def _env(name: str, default: str = "") -> str:
 
 def _request_timeout() -> int:
     try:
-        return int(_env("REQUEST_TIMEOUT", "45"))
+        return int(get_env("REQUEST_TIMEOUT", "45"))
     except ValueError:
         return 45
 
@@ -69,7 +69,7 @@ def _clean_response(text: str) -> str:
 
 
 def call_nvidia(prompt: str, model: str) -> str:
-    api_key = _env("NVIDIA_API_KEY")
+    api_key = get_env("NVIDIA_API_KEY")
     if not api_key:
         raise RuntimeError("NVIDIA_API_KEY is missing.")
 
@@ -108,7 +108,7 @@ def call_nvidia(prompt: str, model: str) -> str:
 
 
 def list_gemini_generate_content_models() -> list[str]:
-    api_key = _env("GEMINI_API_KEY")
+    api_key = get_env("GEMINI_API_KEY")
     if not api_key:
         raise RuntimeError("GEMINI_API_KEY is missing.")
 
@@ -142,7 +142,7 @@ def _gemini_model_help() -> str:
 
 
 def call_gemini(prompt: str, model: str) -> str:
-    api_key = _env("GEMINI_API_KEY")
+    api_key = get_env("GEMINI_API_KEY")
     if not api_key:
         raise RuntimeError("GEMINI_API_KEY is missing.")
 
@@ -176,14 +176,14 @@ def _provider_call(provider: str) -> Callable[[str, str], str]:
 
 
 def _role_candidates(role: str) -> list[tuple[str, str, str]]:
-    generator_provider = _env("GENERATOR_PROVIDER", "nvidia").lower()
-    generator_models = _split_models(_env("GENERATOR_MODEL"), "google/gemma-4-31b-it")
-    critic_provider = _env("CRITIC_PROVIDER", "gemini").lower()
-    critic_models = _split_models(_env("CRITIC_MODEL"), "gemini-3.1-flash-lite")
-    repair_provider = _env("REPAIR_PROVIDER", "auto").lower()
+    generator_provider = get_env("GENERATOR_PROVIDER", "nvidia").lower()
+    generator_models = _split_models(get_env("GENERATOR_MODEL"), "google/gemma-4-31b-it")
+    critic_provider = get_env("CRITIC_PROVIDER", "gemini").lower()
+    critic_models = _split_models(get_env("CRITIC_MODEL"), "gemini-3.1-flash-lite")
+    repair_provider = get_env("REPAIR_PROVIDER", "auto").lower()
     
-    gen_fallback_provider = _env("GENERATOR_FALLBACK_PROVIDER", critic_provider).lower()
-    gen_fallback_models = _split_models(_env("GENERATOR_FALLBACK_MODEL"), _env("CRITIC_MODEL", "gemini-3.1-flash-lite"))
+    gen_fallback_provider = get_env("GENERATOR_FALLBACK_PROVIDER", critic_provider).lower()
+    gen_fallback_models = _split_models(get_env("GENERATOR_FALLBACK_MODEL"), get_env("CRITIC_MODEL", "gemini-3.1-flash-lite"))
 
     if role == "generator":
         candidates = [("generator", generator_provider, model) for model in generator_models]
